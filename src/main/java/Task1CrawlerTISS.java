@@ -12,33 +12,19 @@ import java.nio.file.StandardCopyOption;
 
 public class Task1CrawlerTISS {
 	
-	public static final String URL_BASE = "https://www.gov.br/ans/pt-br";
-	
-	public static void main(String[] args) {
-		System.out.println("Iniciando Web Scraping da Task 1...");
+	public static void executarTask1 (String URL) {
+		System.out.println("\nIniciando Web Scraping da Task 1...\n");
 		
 		try {
-			System.out.println("1. Acessando página inicial (https://www.gov.br/ans/pt-br)");
-			Document docInicial = pegarHtml(URL_BASE);
-			Element linkPrestador = docInicial.selectFirst("a:contains(Espaço do Prestador de Serviços de Saúde)");
-			String urlPrestador = linkPrestador.attr("href");
-			
-			
-			System.out.println("2. Acessando Espaço do Prestador (https://www.gov.br/ans/pt-br/assuntos/prestadores)");
-			Document docPrestador = pegarHtml(urlPrestador);
-			Element linkTiss = docPrestador.selectFirst("a:contains(TISS - Padrão para Troca de Informação de Saúde Suplementar)");
-			String urlTiss = linkTiss.attr("href");
-			
-			
-			System.out.println("3. Acessando página do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss)");
-			Document docTiss = pegarHtml(urlTiss);
+			System.out.println("Acessando página do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss)");
+			Document docTiss = Task1CrawlerTISS.pegarHtml(URL);
 			// A busca mais recente do TISS - Padrão para Troca de Informação de Saúde Suplementar é o priemiro link com nome: Clique aqui para acessar a versão Março/2026
-			Element linkVersaoRecente = docTiss.selectFirst("a:contains(Clique aqui para acessar a versão )");
-			String urlVersaoRecente = linkVersaoRecente.attr("href");
+			Element linkRecente = docTiss.selectFirst("a:contains(Clique aqui para acessar a versão )");
+			String urlRecente = linkRecente.attr("href");
 			
 			
-			System.out.println("4. Acessando a versão mais recente do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss/padrao-tiss-marco-2026)");
-			Document docArquivos = pegarHtml(urlVersaoRecente);
+			System.out.println("Acessando a versão mais recente do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss/padrao-tiss-marco-2026)");
+			Document docArquivos = pegarHtml(urlRecente);
 			Element linkPadraoTISS = docArquivos.selectFirst("tr:contains(Componente de Comunicação)");
 			Element linkDownload = linkPadraoTISS.selectFirst("a");
 			String urlPadraoTISSDownload = linkDownload.attr("href");
