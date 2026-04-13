@@ -9,13 +9,11 @@ public class Task3CrawlerErros {
 		try {
 			System.out.println("Acessando página do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss)");
 			Document docTiss = Task1CrawlerTISS.pegarHtml(URL);
-			Element linkErros = docTiss.selectFirst("a:contains(Clique aqui para acessar as planilhas)");
-			String urlErros = linkErros.attr("href");
+			String urlErros = extrairUrlPlanilhas(docTiss);
 			
 			System.out.println("Acessando página Tabelas Relacionadas (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss/padrao-tiss-tabelas-relacionadas)");
 			Document docErros = Task1CrawlerTISS.pegarHtml(urlErros);
-			Element linkDownload = docErros.selectFirst("a:contains(Clique aqui para baixar a tabela de erros no envio para a ANS (.xlsx))");
-			String urlDownloadErros = linkDownload.attr("href");
+			String urlDownloadErros = extrairUrlDownloadErros(docErros);
 			
 			Task1CrawlerTISS.baixarArquivo(urlDownloadErros, "Erros_Envio_ANS.xlsx");
 			
@@ -25,6 +23,22 @@ public class Task3CrawlerErros {
 			System.out.println("Erro ao extrair a tabela: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	static String extrairUrlPlanilhas(Document docTiss) {
+		Element linkErros = docTiss.selectFirst("a:contains(Clique aqui para acessar as planilhas)");
+		if (linkErros == null) {
+			throw new IllegalStateException("Link para a página de planilhas não encontrado.");
+		}
+		return linkErros.attr("href");
+	}
+
+	static String extrairUrlDownloadErros(Document docErros) {
+		Element linkDownload = docErros.selectFirst("a:contains(Clique aqui para baixar a tabela de erros no envio para a ANS (.xlsx))");
+		if (linkDownload == null) {
+			throw new IllegalStateException("Link de download da planilha de erros não encontrado.");
+		}
+		return linkDownload.attr("href");
 	}
 	
 }

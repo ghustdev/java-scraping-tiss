@@ -17,16 +17,12 @@ public class Task1CrawlerTISS {
 		try {
 			System.out.println("Acessando página do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss)");
 			Document docTiss = Task1CrawlerTISS.pegarHtml(URL);
-			// A busca mais recente do TISS - Padrão para Troca de Informação de Saúde Suplementar é o priemiro link com nome: Clique aqui para acessar a versão Março/2026
-			Element linkRecente = docTiss.selectFirst("a:contains(Clique aqui para acessar a versão )");
-			String urlRecente = linkRecente.attr("href");
+			String urlRecente = extrairUrlVersaoRecente(docTiss);
 			
 			
 			System.out.println("Acessando a versão mais recente do TISS (https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss/padrao-tiss-marco-2026)");
 			Document docArquivos = pegarHtml(urlRecente);
-			Element linkPadraoTISS = docArquivos.selectFirst("tr:contains(Componente de Comunicação)");
-			Element linkDownload = linkPadraoTISS.selectFirst("a");
-			String urlPadraoTISSDownload = linkDownload.attr("href");
+			String urlPadraoTISSDownload = extrairUrlDownloadComponente(docArquivos);
 			
 			System.out.println("Sucesso! Link de download encontrado: " + urlPadraoTISSDownload);
 			
@@ -38,6 +34,28 @@ public class Task1CrawlerTISS {
 			System.out.println("Ocorreu um erro na navegação: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	static String extrairUrlVersaoRecente(Document docTiss) {
+		Element linkRecente = docTiss.selectFirst("a:contains(Clique aqui para acessar a versão )");
+		if (linkRecente == null) {
+			throw new IllegalStateException("Link da versão mais recente do TISS não encontrado.");
+		}
+		return linkRecente.attr("href");
+	}
+
+	static String extrairUrlDownloadComponente(Document docArquivos) {
+		Element linhaComponente = docArquivos.selectFirst("tr:contains(Componente de Comunicação)");
+		if (linhaComponente == null) {
+			throw new IllegalStateException("Linha de download do componente de comunicação não encontrada.");
+		}
+
+		Element linkDownload = linhaComponente.selectFirst("a");
+		if (linkDownload == null) {
+			throw new IllegalStateException("Link de download do componente de comunicação não encontrado.");
+		}
+
+		return linkDownload.attr("href");
 	}
 	
 	public static Document pegarHtml(String url) {
