@@ -8,8 +8,14 @@ O objetivo foi criar um bot capaz de simular a navegação humana no site do Gov
 
 ### Funcionalidades (Tasks)
 - **Task 1:** Navegação até à versão mais recente do Padrão TISS e download do *Componente de Comunicação*.
+<img width="1889" height="926" alt="Captura de tela de 2026-04-13 09-36-31" src="https://github.com/user-attachments/assets/ad058b1d-6fc9-491c-957f-3102b6df9a84" />
+
 - **Task 2:** Extração de dados da tabela de "Histórico de Versões", exportação para formato **CSV** e implementação de lógica de paragem na competência de Janeiro de 2016.
+<img width="1898" height="945" alt="Captura de tela de 2026-04-13 10-40-08" src="https://github.com/user-attachments/assets/45721739-c7a1-4da1-b02a-57ea2df165e2" />
+
 - **Task 3:** Navegação e download automático da *Tabela de erros no envio para a ANS*.
+<img width="1906" height="937" alt="Captura de tela de 2026-04-13 12-18-33" src="https://github.com/user-attachments/assets/c9094f0f-ac81-478c-9e1c-29cd1d7f566d" />
+
 
 ## 🛠 Tecnologias Utilizadas
 * **Java 21:** Versão moderna da linguagem, aproveitando funcionalidades como a API de ficheiros (`Files.writeString`).
