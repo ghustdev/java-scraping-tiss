@@ -1,5 +1,4 @@
 import groovyx.net.http.HttpBuilder;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -46,7 +45,6 @@ public class Task1CrawlerTISS {
 			config.getRequest().setUri(url);
 		});
 		
-		// Agora convertemos para Document, pois é isso que o HttpBuilder está devolvendo
 		return (Document) http.get();
 	}
 	
